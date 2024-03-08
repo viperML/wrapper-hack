@@ -10,3 +10,4 @@ crate-type = ["cdylib"]
 
 [dependencies]
 libc = "0.2.153"
+nix = "0.28.0"
