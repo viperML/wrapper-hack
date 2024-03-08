@@ -29,7 +29,7 @@ pub unsafe extern "C" fn execve(
     ) -> c_int = std::mem::transmute(addr);
 
     let _prog = CString::from_raw(prog as *mut _);
-    eprintln!("called execve! {:?}", _prog);
+    eprintln!("Called execve 🦀🚀 {:?}", _prog);
 
     execve_real(prog, argv, envp)
 }
