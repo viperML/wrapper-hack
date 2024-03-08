@@ -10,4 +10,5 @@ crate-type = ["cdylib"]
 
 [dependencies]
 libc = "0.2.153"
+libc-print = "0.1.22"
 nix = "0.28.0"

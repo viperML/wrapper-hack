@@ -1,11 +1,11 @@
-use std::{
-    f64::consts,
-    ffi::CString,
-    ptr::{null, null_mut},
-};
+#![no_std]
 
-use libc::{c_char, c_int, dlsym, EIO, RTLD_DEFAULT, RTLD_NEXT};
+use core::{mem, ptr::null_mut};
+
+use libc::{c_char, c_int, dlsym, RTLD_NEXT};
 use nix::errno::Errno;
+
+use libc_print::std_name::eprintln;
 
 #[no_mangle]
 pub unsafe extern "C" fn execve(
@@ -15,9 +15,8 @@ pub unsafe extern "C" fn execve(
 ) -> c_int {
     let addr = dlsym(RTLD_NEXT, c"execve".as_ptr());
 
-    eprintln!("addr: {:p}", addr);
     if addr == null_mut() {
-        eprintln!("Couldn't find execve!");
+        eprintln!("Couldn't find original execve");
         Errno::EIO.set();
         return -1;
     }
@@ -26,10 +25,9 @@ pub unsafe extern "C" fn execve(
         *const c_char,
         *const *const c_char,
         *const *const c_char,
-    ) -> c_int = std::mem::transmute(addr);
+    ) -> c_int = mem::transmute(addr);
 
-    let _prog = CString::from_raw(prog as *mut _);
-    eprintln!("Called execve 🦀🚀 {:?}", _prog);
+    eprintln!("Hello! 🦀");
 
     execve_real(prog, argv, envp)
 }
